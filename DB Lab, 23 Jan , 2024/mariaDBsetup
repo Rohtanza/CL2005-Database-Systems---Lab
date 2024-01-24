@@ -1,0 +1,37 @@
+In recent versions of Debian (like i am using debain 12), the MySQL service is replaced by MariaDB. Therefore, you should use mariadb instead of mysql when starting, stopping, or checking the status of the service.
+
+Here are the updated commands:
+
+1. If you haven't installed MariaDB yet, you can install it using the following command:
+
+        sudo apt install mariadb-server
+
+2. To start the MariaDB service:
+
+        sudo systemctl start mariadb
+
+3. To check the status of the MariaDB service:
+
+        sudo systemctl status mariadb
+
+after doing this i am checking if my mysql server is running:
+
+    sudo systemctl status mysql
+
+and its telling me that its running but i am still getting error
+
+command i am running "mysql -u root -"p
+
+Enter password:
+ERROR 1698 (28000): Access denied for user 'root'@'localhost'
+
+Lets now resolve this
+so its better to use
+        sudo mysql -u root
+
+and then use enter
+
+            USE mysql
+
+and use mariadb as mysql and do your work
+
