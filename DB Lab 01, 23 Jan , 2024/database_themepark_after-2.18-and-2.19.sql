@@ -1,0 +1,238 @@
+-- MariaDB dump 10.19  Distrib 10.11.4-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: themepark
+-- ------------------------------------------------------
+-- Server version	10.11.4-MariaDB-1~deb12u1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `ATTRACTION`
+--
+
+DROP TABLE IF EXISTS `ATTRACTION`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ATTRACTION` (
+  `ATTRACT_NO` decimal(10,0) NOT NULL,
+  `ATTRACT_NAME` varchar(35) DEFAULT NULL,
+  `ATTRACT_AGE` decimal(3,0) NOT NULL DEFAULT 0,
+  `ATTRACT_CAPACITY` decimal(4,0) DEFAULT NULL,
+  `PARK_CODE` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`ATTRACT_NO`),
+  KEY `PARK_CODE` (`PARK_CODE`),
+  CONSTRAINT `FK_ATTRACT_PARK` FOREIGN KEY (`PARK_CODE`) REFERENCES `THEMEPARK` (`PARK_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ATTRACTION`
+--
+
+LOCK TABLES `ATTRACTION` WRITE;
+/*!40000 ALTER TABLE `ATTRACTION` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ATTRACTION` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `EMPLOYEE`
+--
+
+DROP TABLE IF EXISTS `EMPLOYEE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `EMPLOYEE` (
+  `EMP_NUM` decimal(4,0) NOT NULL,
+  `EMP_TITLE` varchar(15) DEFAULT NULL,
+  `EMP_LNAME` varchar(15) NOT NULL,
+  `EMP_FNAME` varchar(15) NOT NULL,
+  `EMP_DOB` date NOT NULL,
+  `EMP_HIRE_DATE` date DEFAULT NULL,
+  `EMP_AREA_CODE` varchar(4) NOT NULL,
+  `EMP_PHONE` varchar(12) NOT NULL,
+  `PARK_CODE` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`EMP_NUM`),
+  KEY `PARK_CODE` (`PARK_CODE`),
+  CONSTRAINT `FK_EMP_PARK` FOREIGN KEY (`PARK_CODE`) REFERENCES `THEMEPARK` (`PARK_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `EMPLOYEE`
+--
+
+LOCK TABLES `EMPLOYEE` WRITE;
+/*!40000 ALTER TABLE `EMPLOYEE` DISABLE KEYS */;
+INSERT INTO `EMPLOYEE` VALUES
+(2049,'Mr','Rahat','Noman','1990-12-20','2015-05-05','7253','502-4934','UK3452');
+/*!40000 ALTER TABLE `EMPLOYEE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `HOURS`
+--
+
+DROP TABLE IF EXISTS `HOURS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `HOURS` (
+  `EMP_NUM` decimal(4,0) NOT NULL,
+  `ATTRACT_NO` decimal(10,0) NOT NULL,
+  `HOURS_PER_ATTRACT` decimal(2,0) NOT NULL,
+  `HOUR_RATE` decimal(4,2) NOT NULL,
+  `DATE_WORKED` date NOT NULL,
+  PRIMARY KEY (`EMP_NUM`,`ATTRACT_NO`,`DATE_WORKED`),
+  KEY `EMP_NUM` (`EMP_NUM`),
+  KEY `ATTRACT_NO` (`ATTRACT_NO`),
+  CONSTRAINT `FK_HOURS_ATTRACT` FOREIGN KEY (`ATTRACT_NO`) REFERENCES `ATTRACTION` (`ATTRACT_NO`),
+  CONSTRAINT `FK_HOURS_EMP` FOREIGN KEY (`EMP_NUM`) REFERENCES `EMPLOYEE` (`EMP_NUM`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `HOURS`
+--
+
+LOCK TABLES `HOURS` WRITE;
+/*!40000 ALTER TABLE `HOURS` DISABLE KEYS */;
+/*!40000 ALTER TABLE `HOURS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `SALES`
+--
+
+DROP TABLE IF EXISTS `SALES`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SALES` (
+  `TRANSACTION_NO` decimal(10,0) NOT NULL,
+  `PARK_CODE` varchar(10) NOT NULL,
+  `SALE_DATE` date NOT NULL,
+  PRIMARY KEY (`TRANSACTION_NO`),
+  KEY `PARK_CODE` (`PARK_CODE`),
+  CONSTRAINT `FK_SALES_PARK` FOREIGN KEY (`PARK_CODE`) REFERENCES `THEMEPARK` (`PARK_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SALES`
+--
+
+LOCK TABLES `SALES` WRITE;
+/*!40000 ALTER TABLE `SALES` DISABLE KEYS */;
+/*!40000 ALTER TABLE `SALES` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `SALES_LINE`
+--
+
+DROP TABLE IF EXISTS `SALES_LINE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SALES_LINE` (
+  `TRANSACTION_NO` decimal(10,0) NOT NULL,
+  `LINE_NO` decimal(2,0) NOT NULL,
+  `TICKET_NO` decimal(10,0) NOT NULL,
+  `LINE_QTY` decimal(4,0) NOT NULL DEFAULT 0,
+  `LINE_PRICE` decimal(9,2) NOT NULL DEFAULT 0.00,
+  PRIMARY KEY (`TRANSACTION_NO`,`LINE_NO`),
+  KEY `TRANSACTION_NO` (`TRANSACTION_NO`),
+  KEY `TICKET_NO` (`TICKET_NO`),
+  CONSTRAINT `FK_SALES_LINE_SALES` FOREIGN KEY (`TRANSACTION_NO`) REFERENCES `SALES` (`TRANSACTION_NO`),
+  CONSTRAINT `FK_SALES_LINE_TICKET` FOREIGN KEY (`TICKET_NO`) REFERENCES `TICKET` (`TICKET_NO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SALES_LINE`
+--
+
+LOCK TABLES `SALES_LINE` WRITE;
+/*!40000 ALTER TABLE `SALES_LINE` DISABLE KEYS */;
+/*!40000 ALTER TABLE `SALES_LINE` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `THEMEPARK`
+--
+
+DROP TABLE IF EXISTS `THEMEPARK`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `THEMEPARK` (
+  `PARK_CODE` varchar(10) NOT NULL,
+  `PARK_NAME` varchar(35) NOT NULL,
+  `PARK_CITY` varchar(50) NOT NULL,
+  `PARK_COUNTRY` char(2) NOT NULL,
+  PRIMARY KEY (`PARK_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `THEMEPARK`
+--
+
+LOCK TABLES `THEMEPARK` WRITE;
+/*!40000 ALTER TABLE `THEMEPARK` DISABLE KEYS */;
+INSERT INTO `THEMEPARK` VALUES
+('FR1001','FairyLand','PARIS','FR'),
+('PK2049','Garrison','Peshawar','PK'),
+('UK3452','PleasureLand','STOKE','UK');
+/*!40000 ALTER TABLE `THEMEPARK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `TICKET`
+--
+
+DROP TABLE IF EXISTS `TICKET`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TICKET` (
+  `TICKET_NO` decimal(10,0) NOT NULL,
+  `TICKET_PRICE` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `TICKET_TYPE` varchar(20) DEFAULT NULL,
+  `PARK_CODE` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`TICKET_NO`),
+  KEY `PARK_CODE` (`PARK_CODE`),
+  CONSTRAINT `FK_TICKET_PARK` FOREIGN KEY (`PARK_CODE`) REFERENCES `THEMEPARK` (`PARK_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `TICKET`
+--
+
+LOCK TABLES `TICKET` WRITE;
+/*!40000 ALTER TABLE `TICKET` DISABLE KEYS */;
+INSERT INTO `TICKET` VALUES
+(13001,18.99,'Child','FR1001'),
+(13002,34.99,'Adult','FR1001'),
+(13003,20.99,'Senior','FR1001'),
+(88567,22.50,'Child','UK3452'),
+(88568,42.10,'Adult','UK3452'),
+(89720,10.99,'Senior','UK3452');
+/*!40000 ALTER TABLE `TICKET` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-02-06 19:40:04
