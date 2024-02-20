@@ -1,0 +1,67 @@
+Script started on 2024-02-20 12:42:12+05:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="93" LINES="43"]
+[?2004h]0;rohtanza@rohtanza: ~[01;32mrohtanza@rohtanza[00m:[01;34m~[00m$ exit[2Plssudo mysql -u root -p 
+[?2004l[sudo] password for rohtanza: 
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.36 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> USE THEMEPARKDATA;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql>  SELECT sale.TRANSACTION_NO, sale.LINE_NO, sale.TICKET_NO, sale.LINE_QTY, (sale.LINE_Q TY * sale.LINE_PRICE) AS rev, (sale.LINE_QTY * tick.TICKET_PRICE) AS cost FROM sales_line sal e, ticket tick WHERE sale.TICKET_NO = tick.TICKET_NO AND sale.LINE_PRICE > tick.TICKET_PRICE; 
++----------------+---------+-----------+----------+--------+--------+
+| TRANSACTION_NO | LINE_NO | TICKET_NO | LINE_QTY | rev    | cost   |
++----------------+---------+-----------+----------+--------+--------+
+|          12781 |       1 |     13002 |        2 | 139.96 |  69.98 |
+|          12782 |       1 |     13002 |        2 | 139.96 |  69.98 |
+|          12785 |       3 |     13002 |        4 | 559.84 | 139.96 |
+|          12783 |       1 |     13003 |        2 |  83.96 |  41.98 |
+|          67589 |       2 |     67832 |        2 |  74.24 |  37.12 |
+|          67590 |       2 |     67832 |        2 |  74.24 |  37.12 |
+|          67593 |       2 |     67832 |        2 |  74.24 |  37.12 |
+|          67589 |       1 |     67833 |        2 | 114.68 |  57.34 |
+|          67590 |       1 |     67833 |        2 | 114.68 |  57.34 |
+|          67592 |       1 |     67833 |        4 | 458.72 | 114.68 |
+|          67593 |       1 |     67833 |        2 | 114.68 |  57.34 |
+|          34534 |       1 |     88568 |        4 | 673.60 | 168.40 |
+|          34535 |       1 |     88568 |        2 | 168.40 |  84.20 |
+|          34537 |       1 |     88568 |        2 | 168.40 |  84.20 |
+|          34539 |       2 |     88568 |        2 | 168.40 |  84.20 |
+|          34540 |       1 |     88568 |        4 | 673.60 | 168.40 |
+|          34541 |       1 |     88568 |        2 | 168.40 |  84.20 |
+|          34534 |       3 |     89720 |        2 |  43.96 |  21.98 |
+|          34536 |       1 |     89720 |        2 |  43.96 |  21.98 |
+|          34538 |       1 |     89720 |        2 |  43.96 |  21.98 |
+|          34539 |       1 |     89720 |        2 |  43.96 |  21.98 |
+|          34540 |       3 |     89720 |        2 |  43.96 |  21.98 |
++----------------+---------+-----------+----------+--------+--------+
+22 rows in set (0.00 sec)
+
+mysql>  SELECT DISTINCT PARK_NAME FROM themepark WHERE PARK_NAME NOT LIKE '%Land%' ORDER BY P ARK_NAME DESC;
++---------------+
+| PARK_NAME     |
++---------------+
+| Labyrinthe    |
+| GoldTown      |
+| Efling        |
+| AdventurePort |
++---------------+
+4 rows in set (0.00 sec)
+
+mysql> exit
+Bye
+[?2004h]0;rohtanza@rohtanza: ~[01;32mrohtanza@rohtanza[00m:[01;34m~[00m$ exit
+[?2004lexit
+
+Script done on 2024-02-20 12:43:00+05:00 [COMMAND_EXIT_CODE="0"]
