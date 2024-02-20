@@ -1,0 +1,52 @@
+;SELECT COUNT(PARK_CODE)
+FROM attraction;
+
+;SELECT DISTINT(PARK_CODE)
+FROM attraction;
+
+
+
+question no 1
+_______________________
+SELECT DISTINCT PARK_NAME
+FROM themepark
+WHERE PARK_NAME NOT LIKE '%Land%'
+ORDER BY PARK_NAME DESC;
+________________________
+
+;SELECT COUNT(*)
+FROM attraction;
+
+# this counts nulls too, but with column name it doesnt count the nulls.
+
+
+;SELECT PARK_CODE,MIN(TICKET_PRICE),MAX(TICKET_PRICE)
+FROM ticket
+GROUP BY PARK_CODE;
+
+;SELECT PARK_CODE, AVG(TICKET_PRICE)
+FROM ticket
+GROUP BY PARK_CODE
+HAVING AVG(TICKET_PRICE) >= 24.99;
+
+DESCRIBE  attraction;
+DESCRIBE employee;
+DESCRIBE  hours;
+ DESCRIBE  sales;
+ DESCRIBE sales_line;
+ DESCRIBE themepark;
+ DESCRIBE ticket;
+
+SELECT
+    sl.TRANSACTION_NO,
+    sl.LINE_NO,
+    sl.TICKET_NO,
+    sl.LINE_QTY,
+    (sl.LINE_QTY * sl.LINE_PRICE) AS total_revenue,
+    (sl.LINE_QTY * t.TICKET_PRICE) AS total_cost
+FROM
+    sales_line sl, ticket t
+WHERE
+    sl.TICKET_NO = t.TICKET_NO
+    AND sl.LINE_PRICE > t.TICKET_PRICE;
+
