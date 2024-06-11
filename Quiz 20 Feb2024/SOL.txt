@@ -1,0 +1,3 @@
+ SELECT DISTINCT PARK_NAME FROM themepark WHERE PARK_NAME NOT LIKE '%Land%' ORDER BY PARK_NAME DESC;
+ SELECT sale.TRANSACTION_NO, sale.LINE_NO, sale.TICKET_NO, sale.LINE_QTY, (sale.LINE_QTY * sale.LINE_PRICE) AS rev, (sale.LINE_QTY * tick.TICKET_PRICE) AS cost FROM sales_line sale, ticket tick WHERE sale.TICKET_NO = tick.TICKET_NO AND sale.LINE_PRICE > tick.TICKET_PRICE;
+
