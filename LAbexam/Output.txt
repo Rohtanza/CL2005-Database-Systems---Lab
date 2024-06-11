@@ -1,0 +1,391 @@
+
+
+mysql>
+mysql> system echo "Muhammad Rehan 22P-9106 BSE-4a DATABASE FINAL EXAM"
+Muhammad Rehan 22P-9106 BSE-4a DATABASE FINAL EXAM
+mysql> system echo "Question no 1 lets start with creating a database named "pharmacyDb""
+Question no 1 lets start with creating a database named pharmacyDb
+mysql>
+mysql> eCREATE DATABASE pharmacyDb;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE pharmacyDb;
+Database changed
+mysql>
+mysql>
+mysql> system echo "now lets make the tables shown in the exam sheet"
+now lets make the tables shown in the exam sheet
+mysql>
+mysql>
+mysql> CREATE TABLE Supplier (
+    ->     SupplierID INT PRIMARY KEY,
+    ->     Name VARCHAR(100),
+    ->     ContactInformation VARCHAR(100)
+d    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+emysql> CREATE TABLE Pharmacy (
+    ->     PharmacyID INT PRIMARY KEY,
+    ->     Name VARCHAR(100),
+3    ->     Location VARCHAR(50),
+    ->     ContactInformation VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> CREATE TABLE Pharmacist (
+    ->     PharmacistID INT PRIMARY KEY,
+    ->     Name VARCHAR(100),
+    ->     ContactInformation VARCHAR(100),
+    ->     LicenseNumber VARCHAR(50),
+    ->     PharmacyID INT,
+    ->     FOREIGN KEY (PharmacyID) REFERENCES Pharmacy(PharmacyID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+'mysql> CREATE TABLE Medicine (
+    ->     MedicineID INT PRIMARY KEY,
+    ->     Name VARCHAR(100),
+    ->     Description TEXT,
+    ->     Quantity INT,
+    ->     Price DECIMAL(10, 2),
+    ->     ExpiryDate DATE
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mysql> CREATE TABLE Prescription (
+    ->     PrescriptionID INT PRIMARY KEY,
+    ->     Date DATE,
+    ->     PatientName VARCHAR(100),
+e    ->     DoctorName VARCHAR(100),
+    ->     ContactInformation VARCHAR(100),
+    ->     PharmacyID INT,
+    ->     FOREIGN KEY (PharmacyID) REFERENCES Pharmacy(PharmacyID)
+E O    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mysql> CREATE TABLE Orders (
+    ->     OrderID INT PRIMARY KEY,
+    ->     OrderDate DATE,
+    ->     TotalAmount DECIMAL(10, 2),
+    ->     SupplierID INT,
+'    ->     FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mysql> CREATE TABLE OrderDetails (
+    ->     OrderDetailsID INT PRIMARY KEY,
+    ->     Quantity INT,
+    ->     Price DECIMAL(10, 2),
+    ->     OrderID INT,
+    ->     MedicineID INT,
+    ->     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    ->     FOREIGN KEY (MedicineID) REFERENCES Medicine(MedicineID)
+a    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+tmysql>
+Nmysql> CREATE TABLE PharmacyMedicine (
+    ->     PharmacyID INT,
+    ->     MedicineID INT,
+    ->     PRIMARY KEY (PharmacyID, MedicineID),
+-    ->     FOREIGN KEY (PharmacyID) REFERENCES Pharmacy(PharmacyID),
+    ->     FOREIGN KEY (MedicineID) REFERENCES Medicine(MedicineID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+-mysql> CREATE TABLE PrescriptionMedicine (
+    ->     PrescriptionID INT,
+    ->     MedicineID INT,
+    ->     PRIMARY KEY (PrescriptionID, MedicineID),
+    ->     FOREIGN KEY (PrescriptionID) REFERENCES Prescription(PrescriptionID),
+     ->     FOREIGN KEY (MedicineID) REFERENCES Medicine(MedicineID)
+P    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mmysql> CREATE TABLE PharmacySupplier (
+    ->     PharmacyID INT,
+    ->     SupplierID INT,
+    ->     PRIMARY KEY (PharmacyID, SupplierID),
+a    ->     FOREIGN KEY (PharmacyID) REFERENCES Pharmacy(PharmacyID),
+    ->     FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>
+mysql> system echo "------------------------------------------------------"
+------------------------------------------------------
+mysql>
+mysql>
+mysql> system echo "question no 2"
+question no 2
+mysql>
+mysql> INSERT INTO Pharmacy (PharmacyID, Name, Location, ContactInformation) VALUES (1, 'HealthPlus Pharmacy', '123 Wellness Blvd', '123-456-7890');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+Tmysql> INSERT INTO Pharmacy (PharmacyID, Name, Location, ContactInformation) VALUES (2, 'CareWell Pharmacy', '456 Healthy Way', '987-654-3210');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql>
+mysql> INSERT INTO Pharmacy (PharmacyID, Name, Location, ContactInformation) VALUES (3, 'Wellness Pharmacy', '789 Health St', '456-789-0123');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql>
+mysql> INSERT INTO Pharmacy (PharmacyID, Name, Location, ContactInformation) VALUES (4, 'Healthy Life Pharmacy', '321 Wellness Lane', '321-654-9870');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> INSERT INTO Pharmacy (PharmacyID, Name, Location, ContactInformation) VALUES (5, 'PharmaCare', '147 Cure Ave', '741-852-9630');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> system echo "------------------------------------------------------"
+------------------------------------------------------
+mysql>
+mysql>
+mysql> system echo "Question no 3"
+Question no 3
+mysql> system echo "Question no 3.a"
+Question no 3.a
+mysql>
+mysql>
+mysql> CREATE INDEX idx_medicine ON Medicine (Name);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE INDEX idx_Orderdate ON Orders (OrderDate);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE INDEX idx_Price ON Medicine (Price);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> system echo "Question no 3.b"
+Question no 3.b
+mysql>
+mysql>
+mysql> SELECT * FROM Pharmacy WHERE Name NOT LIKE '%L%';
++------------+------------+--------------+--------------------+
+| PharmacyID | Name       | Location     | ContactInformation |
++------------+------------+--------------+--------------------+
+|          5 | PharmaCare | 147 Cure Ave | 741-852-9630       |
++------------+------------+--------------+--------------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> system echo "Question no 3.c"
+Question no 3.c
+mysql>
+mysql>
+mysql> SELECT * FROM Medicine WHERE ExpiryDate < CURDATE();
+Empty set (0.00 sec)
+
+mysql>
+mysql>
+mysql> system echo "Question no 3.d"
+Question no 3.d
+mysql>
+mysql> SELECT DISTINCT Prescription.PatientName
+    -> FROM Prescription
+    -> JOIN PrescriptionMedicine ON Prescription.PrescriptionID = PrescriptionMedicine.PrescriptionID
+    -> JOIN Medicine ON PrescriptionMedicine.MedicineID = Medicine.MedicineID
+    -> WHERE Medicine.Name LIKE '%steroid%';
+Empty set (0.00 sec)
+
+mysql>
+mysql> system echo "Question no 3.e"
+Question no 3.e
+mysql>
+mysql>
+mysql> SELECT COUNT(*) FROM OrderDetails
+    -> JOIN Medicine ON OrderDetails.MedicineID = Medicine.MedicineID
+    -> WHERE Medicine.Name = 'Paracetamol';
++----------+
+| COUNT(*) |
++----------+
+|        0 |
++----------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> system echo "Question no 3.f"
+Question no 3.f
+mysql>
+mysql>
+mysql> CREATE VIEW Qty_view AS
+    -> SELECT Medicine.Name, AVG(OrderDetails.Quantity) AS AverageQuantity
+    -> FROM OrderDetails
+    -> JOIN Medicine ON OrderDetails.MedicineID = Medicine.MedicineID
+    -> WHERE Medicine.Name IN ('med1', ',med2', 'med3')
+    -> GROUP BY Medicine.Name;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> system echo "Question no 3.g"
+Question no 3.g
+mysql>
+mysql>
+mysql> UPDATE Orders
+    -> SET TotalAmount = (SELECT SUM(Quantity * Price) FROM OrderDetails WHERE Orders.OrderID = OrderDetails.OrderID);
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql>
+mysql> system echo "Question no 3.h"
+Question no 3.h
+mysql>
+mysql>
+mysql> system echo "its called protecting your sql installation, Sir when i installed the mysql on debain i set the password strength high and now i dont remeber the commands to modify mysql root setting so this error of the week password will come because i am using my roll no"
+its called protecting your sql installation, Sir when i installed the mysql on debain i set the password strength high and now i dont remeber the commands to modify mysql root setting so this error of the week password will come because i am using my roll no
+mysql>
+mysql> CREATE USER 'rohtanza'@'localhost' IDENTIFIED BY '22p-910622p-9106!@#$';
+ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
+mysql>
+mysql> system echo "Question no 3.i"
+Question no 3.i
+mysql>
+mysql>
+mysql> GRANT SELECT ON pharmacyDb.Qty_view TO 'rohtanza'@'localhost';
+ERROR 1410 (42000): You are not allowed to create a user with GRANT
+mysql>
+mysql>
+mysql> system echo "Question no 3.j"
+Question no 3.j
+mysql>
+mysql> system echo "I didnt understand the question to be honest"
+I didnt understand the question to be honest
+mysql>
+mysql>
+mysql>
+mysql> system echo "Question no 3.k"
+Question no 3.k
+mysql>
+mysql> system echo "Sir i dont know the exact single sqlstate which has to used, so i am using 42000 "
+Sir i dont know the exact single sqlstate which has to used, so i am using 42000
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> CREATE TRIGGER prevent_total_update
+    -> BEFORE UPDATE ON Orders
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF NEW.TotalAmount <> OLD.TotalAmount THEN
+    ->         SIGNAL SQLSTATE '42000' SET MESSAGE_TEXT = 'TotalAmount cant be updeted';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 6
+mysql>     END IF;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'END IF' at line 1
+mysql> END;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'END' at line 1
+mysql>
+mysql> system echo "Question no 3.l"
+Question no 3.l
+mysql>
+mysql>
+mysql> SELECT p.Name AS PharmacyName,
+    ->        (SELECT COUNT(*)
+    ->         FROM PharmacyMedicine pm
+    ->         WHERE pm.PharmacyID = p.PharmacyID) AS TotalMedicines
+    -> FROM Pharmacy p;
++-----------------------+----------------+
+| PharmacyName          | TotalMedicines |
++-----------------------+----------------+
+| HealthPlus Pharmacy   |              0 |
+| CareWell Pharmacy     |              0 |
+| Wellness Pharmacy     |              0 |
+| Healthy Life Pharmacy |              0 |
+| PharmaCare            |              0 |
++-----------------------+----------------+
+5 rows in set (0.01 sec)
+
+mysql>
+mysql> system echo "Question 3.m"
+Question 3.m
+mysql>
+mysql>
+mysql> SELECT p.Name AS PharmacyName, ph.Name AS PharmacistName
+    -> FROM Pharmacy p
+    -> LEFT JOIN Pharmacist ph ON p.PharmacyID = ph.PharmacyID;
++-----------------------+----------------+
+| PharmacyName          | PharmacistName |
++-----------------------+----------------+
+| HealthPlus Pharmacy   | NULL           |
+| CareWell Pharmacy     | NULL           |
+| Wellness Pharmacy     | NULL           |
+| Healthy Life Pharmacy | NULL           |
+| PharmaCare            | NULL           |
++-----------------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql>
+mysql>
+mysql> system echo "------------------------------------------------------"
+------------------------------------------------------
+mysql>
+mysql> system echo "Question no 4"
+Question no 4
+mysql>
+mysql> system echo "------------------------------------------------------"
+------------------------------------------------------
+mysql>
+mysql> system echo "procedure .a"
+procedure .a
+mysql>
+mysql>
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE GetPharmacistsByMedicineThreshold(IN medicineName VARCHAR(100), IN threshold INT)
+    -> BEGIN
+    ->     SELECT ph.Name AS PharmacistName, p.Name AS PharmacyName, SUM(om.Quantity) AS TotalQuantity
+    ->     FROM Pharmacist ph
+    ->     JOIN Pharmacy p ON ph.PharmacyID = p.PharmacyID
+    ->     JOIN PharmacyMedicine pm ON p.PharmacyID = pm.PharmacyID
+    ->     JOIN Medicine m ON pm.MedicineID = m.MedicineID
+    ->     JOIN OrderDetails om ON m.MedicineID = om.MedicineID
+    ->     WHERE m.Name = medicineName
+    ->     GROUP BY ph.Name, p.Name
+    ->     HAVING TotalQuantity > threshold;
+    -> END //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql>
+mysql>
+mysql> system echo "procedure .b "
+procedure .b
+mysql>
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE GetPharmacistsByPrescriptionThreshold(IN threshold INT, IN startDate DATE, IN endDate DATE)
+    -> BEGIN
+    ->     SELECT ph.Name AS PharmacistName, p.Name AS PharmacyName, COUNT(pr.PrescriptionID) AS TotalPrescriptions
+    ->     FROM Pharmacist ph
+    ->     JOIN Pharmacy p ON ph.PharmacyID = p.PharmacyID
+    ->     JOIN Prescription pr ON p.PharmacyID = pr.PharmacyID
+    ->     WHERE pr.Date BETWEEN startDate AND endDate
+    ->     GROUP BY ph.Name, p.Name
+    ->     HAVING TotalPrescriptions > threshold;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql>
+mysql>
+mysql>

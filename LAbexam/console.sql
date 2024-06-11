@@ -1,0 +1,264 @@
+
+system echo "Muhammad Rehan 22P-9106 BSE-4a DATABASE FINAL EXAM"
+system echo "Question no 1 lets start with creating a database named "pharmacyDb""
+
+CREATE DATABASE pharmacyDb;
+USE pharmacyDb;
+
+
+system echo "now lets make the tables shown in the exam sheet"
+
+
+CREATE TABLE Supplier (
+    SupplierID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    ContactInformation VARCHAR(100)
+);
+
+CREATE TABLE Pharmacy (
+    PharmacyID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Location VARCHAR(50),
+    ContactInformation VARCHAR(100)
+);
+
+CREATE TABLE Pharmacist (
+    PharmacistID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    ContactInformation VARCHAR(100),
+    LicenseNumber VARCHAR(50),
+    PharmacyID INT,
+    FOREIGN KEY (PharmacyID) REFERENCES Pharmacy(PharmacyID)
+);
+
+CREATE TABLE Medicine (
+    MedicineID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Description TEXT,
+    Quantity INT,
+    Price DECIMAL(10, 2),
+    ExpiryDate DATE
+);
+
+CREATE TABLE Prescription (
+    PrescriptionID INT PRIMARY KEY,
+    Date DATE,
+    PatientName VARCHAR(100),
+    DoctorName VARCHAR(100),
+    ContactInformation VARCHAR(100),
+    PharmacyID INT,
+    FOREIGN KEY (PharmacyID) REFERENCES Pharmacy(PharmacyID)
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    OrderDate DATE,
+    TotalAmount DECIMAL(10, 2),
+    SupplierID INT,
+    FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
+);
+
+CREATE TABLE OrderDetails (
+    OrderDetailsID INT PRIMARY KEY,
+    Quantity INT,
+    Price DECIMAL(10, 2),
+    OrderID INT,
+    MedicineID INT,
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (MedicineID) REFERENCES Medicine(MedicineID)
+);
+
+
+CREATE TABLE PharmacyMedicine (
+    PharmacyID INT,
+    MedicineID INT,
+    PRIMARY KEY (PharmacyID, MedicineID),
+    FOREIGN KEY (PharmacyID) REFERENCES Pharmacy(PharmacyID),
+    FOREIGN KEY (MedicineID) REFERENCES Medicine(MedicineID)
+);
+
+CREATE TABLE PrescriptionMedicine (
+    PrescriptionID INT,
+    MedicineID INT,
+    PRIMARY KEY (PrescriptionID, MedicineID),
+    FOREIGN KEY (PrescriptionID) REFERENCES Prescription(PrescriptionID),
+    FOREIGN KEY (MedicineID) REFERENCES Medicine(MedicineID)
+);
+
+CREATE TABLE PharmacySupplier (
+    PharmacyID INT,
+    SupplierID INT,
+    PRIMARY KEY (PharmacyID, SupplierID),
+    FOREIGN KEY (PharmacyID) REFERENCES Pharmacy(PharmacyID),
+    FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
+);
+
+system echo "------------------------------------------------------"
+
+
+system echo "question no 2"
+
+INSERT INTO Pharmacy (PharmacyID, Name, Location, ContactInformation) VALUES (1, 'HealthPlus Pharmacy', '123 Wellness Blvd', '123-456-7890');
+
+INSERT INTO Pharmacy (PharmacyID, Name, Location, ContactInformation) VALUES (2, 'CareWell Pharmacy', '456 Healthy Way', '987-654-3210');
+
+
+INSERT INTO Pharmacy (PharmacyID, Name, Location, ContactInformation) VALUES (3, 'Wellness Pharmacy', '789 Health St', '456-789-0123');
+
+
+INSERT INTO Pharmacy (PharmacyID, Name, Location, ContactInformation) VALUES (4, 'Healthy Life Pharmacy', '321 Wellness Lane', '321-654-9870');
+
+INSERT INTO Pharmacy (PharmacyID, Name, Location, ContactInformation) VALUES (5, 'PharmaCare', '147 Cure Ave', '741-852-9630');
+
+system echo "------------------------------------------------------"
+
+
+system echo "Question no 3"
+system echo "Question no 3.a"
+
+
+CREATE INDEX idx_medicine ON Medicine (Name);
+CREATE INDEX idx_Orderdate ON Orders (OrderDate);
+CREATE INDEX idx_Price ON Medicine (Price);
+
+system echo "Question no 3.b"
+
+
+SELECT * FROM Pharmacy WHERE Name NOT LIKE '%L%';
+
+system echo "Question no 3.c"
+
+
+SELECT * FROM Medicine WHERE ExpiryDate < CURDATE();
+
+
+system echo "Question no 3.d"
+
+SELECT DISTINCT Prescription.PatientName
+FROM Prescription
+JOIN PrescriptionMedicine ON Prescription.PrescriptionID = PrescriptionMedicine.PrescriptionID
+JOIN Medicine ON PrescriptionMedicine.MedicineID = Medicine.MedicineID
+WHERE Medicine.Name LIKE '%steroid%';
+
+system echo "Question no 3.e"
+
+
+SELECT COUNT(*) FROM OrderDetails
+JOIN Medicine ON OrderDetails.MedicineID = Medicine.MedicineID
+WHERE Medicine.Name = 'Paracetamol';
+
+
+system echo "Question no 3.f"
+
+
+CREATE VIEW Qty_view AS
+SELECT Medicine.Name, AVG(OrderDetails.Quantity) AS AverageQuantity
+FROM OrderDetails
+JOIN Medicine ON OrderDetails.MedicineID = Medicine.MedicineID
+WHERE Medicine.Name IN ('med1', ',med2', 'med3')
+GROUP BY Medicine.Name;
+
+system echo "Question no 3.g"
+
+
+UPDATE Orders
+SET TotalAmount = (SELECT SUM(Quantity * Price) FROM OrderDetails WHERE Orders.OrderID = OrderDetails.OrderID);
+
+system echo "Question no 3.h"
+
+
+system echo "its called protecting your sql installation, Sir when i installed the mysql on debain i set the password strength high and now i dont remeber the commands to modify mysql root setting so this error of the week password will come because i am using my roll no"
+
+CREATE USER 'rohtanza'@'localhost' IDENTIFIED BY '22p-910622p-9106!@#$';
+
+system echo "Question no 3.i"
+
+
+GRANT SELECT ON pharmacyDb.Qty_view TO 'rohtanza'@'localhost';
+
+
+system echo "Question no 3.j"
+
+system echo "I didnt understand the question to be honest"
+
+
+
+system echo "Question no 3.k"
+
+system echo "Sir i dont know the exact single sqlstate which has to used, so i am using 42000 "
+
+
+
+
+
+CREATE TRIGGER prevent_total_update
+BEFORE UPDATE ON Orders
+FOR EACH ROW
+BEGIN
+    IF NEW.TotalAmount <> OLD.TotalAmount THEN
+        SIGNAL SQLSTATE '42000' SET MESSAGE_TEXT = 'TotalAmount cant be updeted';
+    END IF;
+END;
+
+system echo "Question no 3.l"
+
+
+SELECT p.Name AS PharmacyName,
+       (SELECT COUNT(*)
+        FROM PharmacyMedicine pm
+        WHERE pm.PharmacyID = p.PharmacyID) AS TotalMedicines
+FROM Pharmacy p;
+
+system echo "Question 3.m"
+
+
+SELECT p.Name AS PharmacyName, ph.Name AS PharmacistName
+FROM Pharmacy p
+LEFT JOIN Pharmacist ph ON p.PharmacyID = ph.PharmacyID;
+
+
+system echo "------------------------------------------------------"
+
+system echo "Question no 4"
+
+system echo "------------------------------------------------------"
+
+system echo "procedure .a"
+
+
+DELIMITER //
+
+CREATE PROCEDURE GetPharmacistsByMedicineThreshold(IN medicineName VARCHAR(100), IN threshold INT)
+BEGIN
+    SELECT ph.Name AS PharmacistName, p.Name AS PharmacyName, SUM(om.Quantity) AS TotalQuantity
+    FROM Pharmacist ph
+    JOIN Pharmacy p ON ph.PharmacyID = p.PharmacyID
+    JOIN PharmacyMedicine pm ON p.PharmacyID = pm.PharmacyID
+    JOIN Medicine m ON pm.MedicineID = m.MedicineID
+    JOIN OrderDetails om ON m.MedicineID = om.MedicineID
+    WHERE m.Name = medicineName
+    GROUP BY ph.Name, p.Name
+    HAVING TotalQuantity > threshold;
+END //
+
+DELIMITER ;
+
+
+system echo "procedure .b "
+
+DELIMITER //
+
+CREATE PROCEDURE GetPharmacistsByPrescriptionThreshold(IN threshold INT, IN startDate DATE, IN endDate DATE)
+BEGIN
+    SELECT ph.Name AS PharmacistName, p.Name AS PharmacyName, COUNT(pr.PrescriptionID) AS TotalPrescriptions
+    FROM Pharmacist ph
+    JOIN Pharmacy p ON ph.PharmacyID = p.PharmacyID
+    JOIN Prescription pr ON p.PharmacyID = pr.PharmacyID
+    WHERE pr.Date BETWEEN startDate AND endDate
+    GROUP BY ph.Name, p.Name
+    HAVING TotalPrescriptions > threshold;
+END //
+
+DELIMITER ;
+
+
